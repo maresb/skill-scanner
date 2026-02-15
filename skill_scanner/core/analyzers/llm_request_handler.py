@@ -89,7 +89,8 @@ class LLMRequestHandler:
     def _load_response_schema(self) -> dict[str, Any] | None:
         """Load JSON schema for structured outputs."""
         try:
-            schema_path = Path(__file__).parent.parent.parent / "data" / "prompts" / "llm_response_schema.json"
+            from ...data import PROMPTS_DIR
+            schema_path = PROMPTS_DIR / "llm_response_schema.json"
             if schema_path.exists():
                 return json.loads(schema_path.read_text(encoding="utf-8"))
         except Exception as e:

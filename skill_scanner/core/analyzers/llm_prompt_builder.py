@@ -37,7 +37,8 @@ class PromptBuilder:
 
     def _load_prompts(self):
         """Load analysis prompts from markdown files."""
-        prompts_dir = Path(__file__).parent.parent.parent / "data" / "prompts"
+        from ...data import PROMPTS_DIR
+        prompts_dir = PROMPTS_DIR
 
         try:
             protection_file = prompts_dir / "boilerplate_protection_rule_prompt.md"

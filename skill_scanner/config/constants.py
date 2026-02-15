@@ -20,6 +20,7 @@ Constants for Skill Scanner.
 Mirrors MCP Scanner's constants structure.
 """
 
+import sys
 from pathlib import Path
 
 
@@ -30,8 +31,12 @@ class SkillScannerConstants:
     VERSION = "0.2.0"
 
     # Project paths
-    PROJECT_ROOT = Path(__file__).parent.parent.parent
-    PACKAGE_ROOT = Path(__file__).parent.parent
+    if getattr(sys, "frozen", False):
+        PACKAGE_ROOT = Path(sys._MEIPASS) / "skill_scanner"
+        PROJECT_ROOT = Path(sys._MEIPASS)
+    else:
+        PROJECT_ROOT = Path(__file__).parent.parent.parent
+        PACKAGE_ROOT = Path(__file__).parent.parent
 
     # Resource paths
     DATA_DIR = PACKAGE_ROOT / "data"

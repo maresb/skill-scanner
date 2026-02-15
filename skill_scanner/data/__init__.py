@@ -20,9 +20,13 @@ Data directory for Skill Scanner.
 Contains prompts and rule files, matching MCP Scanner structure.
 """
 
+import sys
 from pathlib import Path
 
-DATA_DIR = Path(__file__).parent
+if getattr(sys, "frozen", False):
+    DATA_DIR = Path(sys._MEIPASS) / "skill_scanner" / "data"
+else:
+    DATA_DIR = Path(__file__).parent
 PROMPTS_DIR = DATA_DIR / "prompts"
 YARA_RULES_DIR = DATA_DIR / "yara_rules"
 RULES_DIR = DATA_DIR / "rules"

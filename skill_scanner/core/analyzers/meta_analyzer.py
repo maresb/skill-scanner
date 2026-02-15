@@ -324,7 +324,8 @@ class MetaAnalyzer(BaseAnalyzer):
 
     def _load_prompts(self):
         """Load meta-analysis prompt templates from files."""
-        prompts_dir = Path(__file__).parent.parent.parent / "data" / "prompts"
+        from ...data import PROMPTS_DIR
+        prompts_dir = PROMPTS_DIR
         meta_prompt_file = prompts_dir / "skill_meta_analysis_prompt.md"
 
         try:

@@ -354,12 +354,8 @@ Parameter Flow Tracking:
         """
         try:
             # Try to load from data/prompts directory
-            prompt_file = (
-                Path(__file__).parent.parent.parent.parent.parent
-                / "data"
-                / "prompts"
-                / "skill_alignment_analysis_prompt.md"
-            )
+            from .....data import PROMPTS_DIR
+            prompt_file = PROMPTS_DIR / "skill_alignment_analysis_prompt.md"
 
             if prompt_file.is_file():
                 return prompt_file.read_text(encoding="utf-8")
