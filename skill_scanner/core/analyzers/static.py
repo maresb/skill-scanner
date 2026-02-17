@@ -906,10 +906,19 @@ class StaticAnalyzer(BaseAnalyzer):
                 or skill_file.relative_path.endswith((".template", ".tmpl", ".tpl"))
                 or (
                     skill_file.file_type == "other"
-                    and skill_file.relative_path.endswith((
-                        ".txt", ".json", ".yaml", ".yml",
-                        ".html", ".css", ".svg", ".xml", ".xsd",
-                    ))
+                    and skill_file.relative_path.endswith(
+                        (
+                            ".txt",
+                            ".json",
+                            ".yaml",
+                            ".yml",
+                            ".html",
+                            ".css",
+                            ".svg",
+                            ".xml",
+                            ".xsd",
+                        )
+                    )
                 )
             )
 

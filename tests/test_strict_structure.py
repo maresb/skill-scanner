@@ -248,9 +248,7 @@ class TestFrontmatterValidation:
         skill_dir = tmp_path / "a"
         skill_dir.mkdir()
         long_name = "a" * 65
-        (skill_dir / "SKILL.md").write_text(
-            f"---\nname: {long_name}\ndescription: hi\n---\n"
-        )
+        (skill_dir / "SKILL.md").write_text(f"---\nname: {long_name}\ndescription: hi\n---\n")
         result = SkillValidator().validate(skill_dir)
         codes = [e.code for e in result.errors]
         assert ValidationErrorCode.NAME_LENGTH_OUT_OF_RANGE in codes
@@ -258,9 +256,7 @@ class TestFrontmatterValidation:
     def test_name_uppercase_rejected(self, tmp_path):
         skill_dir = tmp_path / "MySkill"
         skill_dir.mkdir()
-        (skill_dir / "SKILL.md").write_text(
-            "---\nname: MySkill\ndescription: hi\n---\n"
-        )
+        (skill_dir / "SKILL.md").write_text("---\nname: MySkill\ndescription: hi\n---\n")
         result = SkillValidator().validate(skill_dir)
         codes = [e.code for e in result.errors]
         assert ValidationErrorCode.NAME_INVALID_FORMAT in codes
@@ -268,9 +264,7 @@ class TestFrontmatterValidation:
     def test_name_consecutive_hyphens_rejected(self, tmp_path):
         skill_dir = tmp_path / "my--skill"
         skill_dir.mkdir()
-        (skill_dir / "SKILL.md").write_text(
-            "---\nname: my--skill\ndescription: hi\n---\n"
-        )
+        (skill_dir / "SKILL.md").write_text("---\nname: my--skill\ndescription: hi\n---\n")
         result = SkillValidator().validate(skill_dir)
         codes = [e.code for e in result.errors]
         assert ValidationErrorCode.NAME_INVALID_FORMAT in codes
@@ -278,9 +272,7 @@ class TestFrontmatterValidation:
     def test_name_leading_hyphen_rejected(self, tmp_path):
         skill_dir = tmp_path / "-bad"
         skill_dir.mkdir()
-        (skill_dir / "SKILL.md").write_text(
-            "---\nname: \"-bad\"\ndescription: hi\n---\n"
-        )
+        (skill_dir / "SKILL.md").write_text('---\nname: "-bad"\ndescription: hi\n---\n')
         result = SkillValidator().validate(skill_dir)
         codes = [e.code for e in result.errors]
         assert ValidationErrorCode.NAME_INVALID_FORMAT in codes
@@ -288,9 +280,7 @@ class TestFrontmatterValidation:
     def test_name_dir_mismatch(self, tmp_path):
         skill_dir = tmp_path / "actual-dir"
         skill_dir.mkdir()
-        (skill_dir / "SKILL.md").write_text(
-            "---\nname: other-name\ndescription: hi\n---\n"
-        )
+        (skill_dir / "SKILL.md").write_text("---\nname: other-name\ndescription: hi\n---\n")
         result = SkillValidator().validate(skill_dir)
         codes = [e.code for e in result.errors]
         assert ValidationErrorCode.NAME_DIR_MISMATCH in codes
@@ -305,9 +295,7 @@ class TestFrontmatterValidation:
     def test_description_whitespace_only(self, tmp_path):
         skill_dir = tmp_path / "my-skill"
         skill_dir.mkdir()
-        (skill_dir / "SKILL.md").write_text(
-            "---\nname: my-skill\ndescription: \"   \"\n---\n"
-        )
+        (skill_dir / "SKILL.md").write_text('---\nname: my-skill\ndescription: "   "\n---\n')
         result = SkillValidator().validate(skill_dir)
         codes = [e.code for e in result.errors]
         assert ValidationErrorCode.DESCRIPTION_EMPTY in codes
@@ -316,9 +304,7 @@ class TestFrontmatterValidation:
         skill_dir = tmp_path / "my-skill"
         skill_dir.mkdir()
         long_desc = "x" * 1025
-        (skill_dir / "SKILL.md").write_text(
-            f"---\nname: my-skill\ndescription: \"{long_desc}\"\n---\n"
-        )
+        (skill_dir / "SKILL.md").write_text(f'---\nname: my-skill\ndescription: "{long_desc}"\n---\n')
         result = SkillValidator().validate(skill_dir)
         codes = [e.code for e in result.errors]
         assert ValidationErrorCode.DESCRIPTION_TOO_LONG in codes
@@ -328,7 +314,7 @@ class TestFrontmatterValidation:
         skill_dir.mkdir()
         long_compat = "x" * 501
         (skill_dir / "SKILL.md").write_text(
-            f"---\nname: my-skill\ndescription: ok\ncompatibility: \"{long_compat}\"\n---\n"
+            f'---\nname: my-skill\ndescription: ok\ncompatibility: "{long_compat}"\n---\n'
         )
         result = SkillValidator().validate(skill_dir)
         codes = [e.code for e in result.errors]
@@ -337,9 +323,7 @@ class TestFrontmatterValidation:
     def test_metadata_not_dict(self, tmp_path):
         skill_dir = tmp_path / "my-skill"
         skill_dir.mkdir()
-        (skill_dir / "SKILL.md").write_text(
-            "---\nname: my-skill\ndescription: ok\nmetadata: not-a-dict\n---\n"
-        )
+        (skill_dir / "SKILL.md").write_text("---\nname: my-skill\ndescription: ok\nmetadata: not-a-dict\n---\n")
         result = SkillValidator().validate(skill_dir)
         codes = [e.code for e in result.errors]
         assert ValidationErrorCode.FRONTMATTER_PARSE_ERROR in codes

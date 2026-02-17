@@ -92,13 +92,23 @@ class ValidationResult:
 class SkillValidator:
     """Strict structural validator for Agent Skills directories."""
 
-    ALLOWED_EXTENSIONS = frozenset({
-        ".md", ".py", ".sh", ".json", ".yaml",  # spec-defined
-        ".txt",                                   # plain text (LICENSE.txt, etc.)
-        ".js", ".ts",                             # script languages
-        ".html", ".css", ".svg",                  # web assets
-        ".xml", ".xsd",                           # declarative data/schemas
-    })
+    ALLOWED_EXTENSIONS = frozenset(
+        {
+            ".md",
+            ".py",
+            ".sh",
+            ".json",
+            ".yaml",  # spec-defined
+            ".txt",  # plain text (LICENSE.txt, etc.)
+            ".js",
+            ".ts",  # script languages
+            ".html",
+            ".css",
+            ".svg",  # web assets
+            ".xml",
+            ".xsd",  # declarative data/schemas
+        }
+    )
     ALLOWED_SUBDIRS = frozenset({"scripts", "references", "assets"})
     NAME_PATTERN = re.compile(r"^[a-z0-9](?:[a-z0-9]|-(?!-))*[a-z0-9]$|^[a-z0-9]$")
 
@@ -128,9 +138,7 @@ class SkillValidator:
 
         # Step 4: Check SKILL.md exists (case-sensitive, even on case-insensitive FS)
         skill_md_path = path / "SKILL.md"
-        has_skill_md = skill_md_path.is_file() and "SKILL.md" in [
-            p.name for p in path.iterdir()
-        ]
+        has_skill_md = skill_md_path.is_file() and "SKILL.md" in [p.name for p in path.iterdir()]
         if not has_skill_md:
             result.errors.append(
                 ValidationError(
@@ -211,9 +219,7 @@ class SkillValidator:
 
         return valid_files
 
-    def _validate_encoding(
-        self, files: list[Path], root: Path, result: ValidationResult
-    ) -> None:
+    def _validate_encoding(self, files: list[Path], root: Path, result: ValidationResult) -> None:
         """Check that files are valid UTF-8 text without null bytes."""
         for file_path in files:
             rel = str(file_path.relative_to(root))
@@ -243,9 +249,7 @@ class SkillValidator:
                     )
                 )
 
-    def _validate_frontmatter(
-        self, skill_md_path: Path, root: Path, result: ValidationResult
-    ) -> None:
+    def _validate_frontmatter(self, skill_md_path: Path, root: Path, result: ValidationResult) -> None:
         """Parse SKILL.md frontmatter and validate fields."""
         try:
             content = skill_md_path.read_text(encoding="utf-8")
@@ -392,7 +396,6 @@ def validate_skill_or_raise(path: Path) -> ValidationResult:
     if not result.is_valid:
         messages = [e.message for e in result.errors]
         raise SkillValidationError(
-            f"Skill validation failed with {len(result.errors)} error(s): "
-            + "; ".join(messages)
+            f"Skill validation failed with {len(result.errors)} error(s): " + "; ".join(messages)
         )
     return result
