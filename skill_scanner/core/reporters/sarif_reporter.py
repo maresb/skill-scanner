@@ -188,30 +188,41 @@ class SARIFReporter:
                 "properties": {
                     "category": finding.category.value,
                     "severity": finding.severity.value,
-                    **({"remediation": finding.remediation} if finding.remediation else {}),
                 },
             }
 
-            artifact_uri = finding.file_path if finding.file_path else "SKILL.md"
-            location: dict[str, Any] = {
-                "physicalLocation": {
-                    "artifactLocation": {
-                        "uri": artifact_uri,
-                        "uriBaseId": "%SRCROOT%",
-                    },
-                }
-            }
-
-            if finding.line_number:
-                location["physicalLocation"]["region"] = {
-                    "startLine": finding.line_number,
-                }
-                if finding.snippet:
-                    location["physicalLocation"]["region"]["snippet"] = {
-                        "text": finding.snippet,
+            # Add location if file path is available
+            if finding.file_path:
+                location: dict[str, Any] = {
+                    "physicalLocation": {
+                        "artifactLocation": {
+                            "uri": finding.file_path,
+                            "uriBaseId": "%SRCROOT%",
+                        },
                     }
+                }
 
-            result["locations"] = [location]
+                # Add region if line number is available
+                if finding.line_number:
+                    location["physicalLocation"]["region"] = {
+                        "startLine": finding.line_number,
+                    }
+                    if finding.snippet:
+                        location["physicalLocation"]["region"]["snippet"] = {
+                            "text": finding.snippet,
+                        }
+
+                result["locations"] = [location]
+
+            # Add fixes/remediation if available
+            if finding.remediation:
+                result["fixes"] = [
+                    {
+                        "description": {
+                            "text": finding.remediation,
+                        }
+                    }
+                ]
 
             # Add fingerprint for deduplication
             result["fingerprints"] = {
