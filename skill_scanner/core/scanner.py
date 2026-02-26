@@ -711,7 +711,7 @@ class SkillScanner:
                 report.skills_skipped.append({"skill": str(skill_dir), "reason": str(e)})
                 continue
             except Exception as e:
-                logger.error("Unexpected error scanning %s: %s", skill_dir, e)
+                logger.error("Unexpected error scanning %s: %s", skill_dir, e, exc_info=True)
                 report.skills_skipped.append({"skill": str(skill_dir), "reason": str(e)})
                 continue
 

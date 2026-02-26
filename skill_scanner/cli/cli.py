@@ -23,6 +23,7 @@ import asyncio
 import logging
 import os
 import sys
+import traceback
 from collections.abc import Callable
 from pathlib import Path
 
@@ -384,6 +385,7 @@ def scan_command(args: argparse.Namespace) -> int:
         return 1
     except Exception as e:
         print(f"Unexpected error: {e}", file=sys.stderr)
+        traceback.print_exc(file=sys.stderr)
         return 1
 
 
@@ -489,6 +491,7 @@ def scan_all_command(args: argparse.Namespace) -> int:
 
     except Exception as e:
         print(f"Unexpected error: {e}", file=sys.stderr)
+        traceback.print_exc(file=sys.stderr)
         return 1
 
 
