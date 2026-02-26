@@ -30,7 +30,7 @@ pip install cisco-ai-skill-scanner[all]
 ```bash
 # For LLM analyzer and Meta-analyzer
 export SKILL_SCANNER_LLM_API_KEY="your_api_key"
-export SKILL_SCANNER_LLM_MODEL="claude-3-5-sonnet-20241022"
+export SKILL_SCANNER_LLM_MODEL="anthropic/claude-sonnet-4-20250514"
 
 # For VirusTotal binary scanning
 export VIRUSTOTAL_API_KEY="your_virustotal_api_key"
@@ -38,6 +38,8 @@ export VIRUSTOTAL_API_KEY="your_virustotal_api_key"
 # For Cisco AI Defense
 export AI_DEFENSE_API_KEY="your_aidefense_api_key"
 ```
+
+See [Configuration Reference](../reference/configuration-reference.md) for every available environment variable.
 
 ### Interactive Wizard
 
@@ -73,10 +75,11 @@ skill-scanner scan-all evals/skills --format markdown --detailed --output report
 
 ## Demo Results
 
-The project includes test skills in `evals/skills/` for evaluation and testing:
+The project includes test skills in [`evals/skills/`](https://github.com/cisco-ai-defense/skill-scanner/tree/main/evals/skills) for evaluation and testing:
 
 ### [OK] simple-math (SAFE)
-```bash
+
+```txt
 $ skill-scanner scan evals/skills/safe-skills/simple-math
 ============================================================
 Skill: simple-math
@@ -84,11 +87,13 @@ Skill: simple-math
 Status: [OK] SAFE
 Max Severity: SAFE
 Total Findings: 0
-Scan Duration: 0.27s
+Scan Duration: 0.12s
+
 ```
 
 ### [FAIL] multi-file-exfiltration (CRITICAL)
-```bash
+
+```txt
 $ skill-scanner scan evals/skills/behavioral-analysis/multi-file-exfiltration --use-behavioral
 ============================================================
 Skill: config-analyzer
@@ -96,13 +101,14 @@ Skill: config-analyzer
 Status: [FAIL] ISSUES FOUND
 Max Severity: CRITICAL
 Total Findings: 11
-Scan Duration: 0.42s
+Scan Duration: 0.37s
 
 Findings Summary:
-  Critical: 3
-  High:     3
-  Medium:   4
-  Low:      1
+  CRITICAL: 3
+      HIGH: 3
+    MEDIUM: 4
+       LOW: 1
+      INFO: 0
 ```
 
 **Detected Threats:**
@@ -126,7 +132,11 @@ skill-scanner --help
 skill-scanner scan --help
 ```
 
+See [CLI Command Reference](../reference/cli-command-reference.md) for detailed flags and options for every command.
+
 ## Output Formats
+
+See [Output Formats Reference](../reference/output-formats.md) for sample outputs and a format decision guide.
 
 ### JSON (for CI/CD)
 ```bash
@@ -168,7 +178,7 @@ skill-scanner generate-policy -o my_policy.yaml
 skill-scanner configure-policy
 ```
 
-See [Scan Policy Guide](scan-policy.md) for full details.
+See [Scan Policy Guide](../user-guide/scan-policies-overview.md) for full details.
 
 ### Enable All Analyzers
 ```bash
@@ -181,7 +191,7 @@ skill-scanner scan /path/to/skill \
 ```
 
 **LLM provider note:** `--llm-provider` currently accepts `anthropic` or `openai`.
-For Bedrock, Vertex, Azure, Gemini, and other LiteLLM backends, set provider-specific model strings and environment variables (see `docs/llm-analyzer.md`).
+For Bedrock, Vertex, Azure, Gemini, and other LiteLLM backends, set provider-specific model strings and environment variables (see [Dependencies and LLM Providers](../reference/dependencies-and-llm-providers.md)).
 
 ### Cross-Skill Analysis
 ```bash
@@ -221,10 +231,11 @@ The hook only scans skill directories with staged changes. Use `--all` to scan e
 ## Next Steps
 
 1. **Review the documentation:**
-   - [README.md](../README.md) - Project overview
-   - [docs/architecture.md](architecture.md) - System design
-   - [docs/threat-taxonomy.md](threat-taxonomy.md) - All threat categories
-   - [docs/scan-policy.md](scan-policy.md) - Custom policies and tuning
+   - [README.md](https://github.com/cisco-ai-defense/skill-scanner/blob/main/README.md) - Project overview
+   - [/architecture/](../architecture/index.md) - System design
+   - [/architecture/threat-taxonomy](../architecture/threat-taxonomy.md) - Threat taxonomy and mappings
+   - [/user-guide/scan-policies-overview](../user-guide/scan-policies-overview.md) - Custom policies and tuning
+   - [/reference/](../reference/index.md) - Configuration, CLI, API, and output format reference
 
 2. **Try scanning your own skills:**
    ```bash
@@ -236,7 +247,7 @@ The hook only scans skill directories with staged changes. Use `--all` to scan e
    skill-scanner scan-all ./skills --fail-on-severity high
    # Exit code 1 if findings at or above HIGH severity
    ```
-   See [GitHub Actions Integration](github-actions.md) for a ready-made reusable workflow.
+   See [GitHub Actions Integration](../github-actions.md) for a ready-made reusable workflow.
 
 ## Troubleshooting
 
